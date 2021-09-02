@@ -3,6 +3,7 @@ import "./App.css";
 import TaskForm from "./components/TaskForm";
 import Control from "./components/Control";
 import TaskList from "./components/TaskList";
+import { findIndex } from "lodash";
 
 class App extends Component {
   constructor(props) {
@@ -110,7 +111,10 @@ class App extends Component {
   };
   onDelete = (id) => {
     const { tasks } = this.state;
-    const index = this.findIndex(id);
+    // const index = this.findIndex(id);
+    const index = findIndex(tasks, (task) => {
+      return task.id === id;
+    });
     if (index !== -1) {
       tasks.splice(index, 1);
       this.setState({
@@ -169,8 +173,13 @@ class App extends Component {
     );
     if (filter) {
       if (filter.name) {
+        // tasks = tasks.filter((task) => {
+        //   return task.name.toLowerCase().indexOf(filter.name) !== -1;
+        // });
         tasks = tasks.filter((task) => {
-          return task.name.toLowerCase().indexOf(filter.name) !== -1;
+          return (
+            task.name.toLowerCase().indexOf(filter.name.toLowerCase()) !== -1
+          );
         });
       }
       tasks = tasks.filter((task) => {
